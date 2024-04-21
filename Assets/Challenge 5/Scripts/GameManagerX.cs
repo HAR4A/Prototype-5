@@ -4,10 +4,12 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.PlayerLoop;
 
 public class GameManagerX : MonoBehaviour
 {
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI timerText;    
     public TextMeshProUGUI gameOverText;
     public GameObject titleScreen;
     public Button restartButton; 
@@ -31,7 +33,9 @@ public class GameManagerX : MonoBehaviour
         StartCoroutine(SpawnTarget());
         StartCoroutine(ExecuteAfterTime());
         score = 0;
+        time = 60;
         UpdateScore(0);
+        TimerUpdate(60);
         titleScreen.SetActive(false);
     }
 
@@ -75,13 +79,11 @@ public class GameManagerX : MonoBehaviour
         scoreText.text = "Score:" + score;
     }
 
-    /*public void TimerUpdate()
+    public void TimerUpdate(int timerToSubtract)
     {
-       for (int i = 0; i < 60; i--)
-       {
-         
-       }
-    }*/
+        time -= timerToSubtract;
+        timerText.text = "Timer:" + time;
+    }
 
     IEnumerator ExecuteAfterTime(int timeInSec = 60)
     {
