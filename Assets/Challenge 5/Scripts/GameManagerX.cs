@@ -24,6 +24,8 @@ public class GameManagerX : MonoBehaviour
     private float minValueY = -3.75f; //  y value of the center of the bottom-most square
     private float time;
 
+    private bool timerRunning = false;
+
     // Start the game, remove title screen, reset score, and adjust spawnRate based on difficulty button clicked
     public void StartGame(int difficulty)
     {
@@ -79,11 +81,15 @@ public class GameManagerX : MonoBehaviour
 
     public void TimerUpdate()
     {
-        time -= Time.deltaTime;
-        timerText.text = "Timer: " + Mathf.Round(time).ToString();
+        timerText.text = "Time: " + Mathf.Round(time).ToString();
 
-        if (time <= 0)
+        if (time > 0 && timerRunning)
         {
+            time -= Time.deltaTime;
+        }
+        else if (time <= 0)
+        {
+            timerRunning = false;
             GameOver();
         }
     }
