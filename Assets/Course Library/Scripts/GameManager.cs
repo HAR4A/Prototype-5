@@ -16,10 +16,6 @@ public class GameManager : MonoBehaviour
     private int score;
     private float spawnRate = 1.0f;
    
-    void Start()
-    {
-                
-    }
     public void StartGame(int difficulty)
     {
         spawnRate /= difficulty;
