@@ -22,9 +22,7 @@ public class GameManagerX : MonoBehaviour
     private float spaceBetweenSquares = 2.5f;
     private float minValueX = -3.75f; //  x value of the center of the left-most square
     private float minValueY = -3.75f; //  y value of the center of the bottom-most square
-    private float time;
-
-    private bool timerRunning = false;
+    private int time = 60;
 
     // Start the game, remove title screen, reset score, and adjust spawnRate based on difficulty button clicked
     public void StartGame(int difficulty)
@@ -33,7 +31,6 @@ public class GameManagerX : MonoBehaviour
         isGameActive = true;
         StartCoroutine(SpawnTarget());
         score = 0;
-        time = 60;
         UpdateScore(0);
         TimerUpdate();
         titleScreen.SetActive(false);
@@ -63,7 +60,6 @@ public class GameManagerX : MonoBehaviour
 
         Vector3 spawnPosition = new Vector3(spawnPosX, spawnPosY, 0);
         return spawnPosition;
-
     }
 
     // Generates random square index from 0 to 3, which determines which square the target will appear in
@@ -79,18 +75,21 @@ public class GameManagerX : MonoBehaviour
         scoreText.text = "Score: " + score;
     }
 
-    public void TimerUpdate()
+    // Update timer with countdown from 60 to 0
+    void TimerUpdate()
     {
-        timerText.text = "Time: " + Mathf.Round(time).ToString();
+        InvokeRepeating("UpdateTimer", 0, 1);
+    }
 
-        if (time > 0 && timerRunning)
+    void UpdateTimer()
+    {
+        time--;
+        timerText.text = "Time: " + time;
+
+        if (time == 0)
         {
-            time -= Time.deltaTime;
-        }
-        else if (time <= 0)
-        {
-            timerRunning = false;
             GameOver();
+            CancelInvoke("UpdateTimer");
         }
     }
 
