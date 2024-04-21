@@ -4,15 +4,14 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.PlayerLoop;
 
 public class GameManagerX : MonoBehaviour
 {
     public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI timerText;    
+    public TextMeshProUGUI timerText;
     public TextMeshProUGUI gameOverText;
     public GameObject titleScreen;
-    public Button restartButton; 
+    public Button restartButton;
 
     public List<GameObject> targetPrefabs;
 
@@ -20,10 +19,10 @@ public class GameManagerX : MonoBehaviour
     private float spawnRate = 1.5f;
     public bool isGameActive;
 
-    private float spaceBetweenSquares = 2.5f; 
+    private float spaceBetweenSquares = 2.5f;
     private float minValueX = -3.75f; //  x value of the center of the left-most square
     private float minValueY = -3.75f; //  y value of the center of the bottom-most square
-    private int time;
+    private float time;
 
     // Start the game, remove title screen, reset score, and adjust spawnRate based on difficulty button clicked
     public void StartGame(int difficulty)
@@ -31,11 +30,10 @@ public class GameManagerX : MonoBehaviour
         spawnRate /= difficulty;
         isGameActive = true;
         StartCoroutine(SpawnTarget());
-        StartCoroutine(ExecuteAfterTime());
         score = 0;
         time = 60;
         UpdateScore(0);
-        TimerUpdate(60);
+        TimerUpdate();
         titleScreen.SetActive(false);
     }
 
@@ -51,7 +49,7 @@ public class GameManagerX : MonoBehaviour
             {
                 Instantiate(targetPrefabs[index], RandomSpawnPosition(), targetPrefabs[index].transform.rotation);
             }
-            
+
         }
     }
 
@@ -76,28 +74,26 @@ public class GameManagerX : MonoBehaviour
     public void UpdateScore(int scoreToAdd)
     {
         score += scoreToAdd;
-        scoreText.text = "Score:" + score;
+        scoreText.text = "Score: " + score;
     }
 
-    public void TimerUpdate(int timerToSubtract)
+    public void TimerUpdate()
     {
-        time -= timerToSubtract;
-        timerText.text = "Timer:" + time;
-    }
+        time -= Time.deltaTime;
+        timerText.text = "Timer: " + Mathf.Round(time).ToString();
 
-    IEnumerator ExecuteAfterTime(int timeInSec = 60)
-    {
-        yield return new WaitForSeconds(timeInSec);
-        GameOver();
+        if (time <= 0)
+        {
+            GameOver();
+        }
     }
-
 
     // Stop game, bring up game over text and restart button
     public void GameOver()
     {
         isGameActive = false;
         gameOverText.gameObject.SetActive(true);
-        restartButton.gameObject.SetActive(true);     
+        restartButton.gameObject.SetActive(true);
     }
 
     // Restart game by reloading the scene
