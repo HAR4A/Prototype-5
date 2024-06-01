@@ -16,10 +16,9 @@ public class Target : MonoBehaviour
     private float maxTorque = 15;
     private float xRange = 4;
     private float ySpawnPos = -6;
+   
 
-    
-
-    void Start()
+   private void Start()
     {
         targetRb = GetComponent<Rigidbody>();
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();  
