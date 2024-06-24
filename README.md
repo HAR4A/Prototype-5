@@ -1,4 +1,4 @@
-![image](https://github.com/HAR4A/Prototype-5/assets/150113486/80533522-63f9-466e-be11-f578aa2d2dfb)# Prototype-5
+# Prototype-5
  
 Мини-игра в жанре Fruit Ninja, где необходимо нажимать на съедобные предметы, чтобы заработать очки.
 
